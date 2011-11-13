@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.SQLException;
+import android.database.Cursor;
 
 // data wrapper
 import android.content.ContentValues;
@@ -32,7 +33,7 @@ public class DBAdapter {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(String.format("create table %s (%s, %s, %s, %s, %s);",
                     TABLE_NAME,
-                    "id integer primary key autoincrement",
+                    "_id integer primary key autoincrement",
                     "date text",
                     "odometer real",
                     "liters real",
@@ -74,13 +75,13 @@ public class DBAdapter {
 
     public int save(ContentValues content)
     {
-        Integer id = content.getAsInteger("id");
+        Integer id = content.getAsInteger("_id");
         Log.d("DBAdapter", ">> SAVE: ");
         if (id == null) {
             db.insert(TABLE_NAME, null, content);
             id = 1; // FIXME get the last id
         } else {
-            db.update(TABLE_NAME, content, String.format("id = %i", id), null);
+            db.update(TABLE_NAME, content, String.format("_id = %i", id), null);
         }
         Log.d("DBAdapter", Integer.toString(id));
         Log.d("DBAdapter", "SAVE <<");
@@ -89,7 +90,23 @@ public class DBAdapter {
 
     public int delete(int id)
     {
-        return db.delete(TABLE_NAME, String.format("id = %i", id), null);
+        return db.delete(TABLE_NAME, String.format("_id = %i", id), null);
+    }
+
+    public Cursor all()
+    {
+        Cursor cursor = db.query(TABLE_NAME,
+            new String[] {"_id", "date", "odometer", "liters", "fuel"},
+            null,
+            null,
+            null,
+            null,
+            null
+            );
+        if (cursor.moveToFirst()) {
+            return cursor;
+        }
+        return null;
     }
 
 }
