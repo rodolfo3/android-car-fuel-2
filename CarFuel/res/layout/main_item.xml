@@ -5,30 +5,31 @@
     >
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
+        android:layout_width="100px"
         android:layout_height="wrap_content"
         android:padding="10px"
         android:text="date"
     />
     <TextView
         android:id="@+id/odometer"
-        android:layout_width="wrap_content"
+        android:layout_width="60px"
         android:layout_height="wrap_content"
         android:padding="10px"
         android:text="odometer"
     />
     <TextView
         android:id="@+id/liters"
-        android:layout_width="wrap_content"
+        android:layout_width="60px"
         android:layout_height="wrap_content"
         android:padding="10px"
         android:text="liters"
     />
     <TextView
         android:id="@+id/fuel"
-        android:layout_width="wrap_content"
+        android:layout_width="80px"
         android:layout_height="wrap_content"
         android:padding="10px"
         android:text="fuel"
     />
+
 </LinearLayout>

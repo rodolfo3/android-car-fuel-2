@@ -73,19 +73,20 @@ public class DBAdapter {
         dbhelper.close();
     }
 
-    public int save(ContentValues content)
+    public void save(ContentValues content)
     {
-        Integer id = content.getAsInteger("_id");
+        Long id = content.getAsLong("_id");
         Log.d("DBAdapter", ">> SAVE: ");
         if (id == null) {
             db.insert(TABLE_NAME, null, content);
-            id = 1; // FIXME get the last id
+            id = new Long(1); // FIXME get the last id
         } else {
-            db.update(TABLE_NAME, content, String.format("_id = %i", id), null);
+        Log.d("DBAdapter", ">> UPDATE >> " + id);
+            db.update(TABLE_NAME, content, "_id = " + id, null);
         }
-        Log.d("DBAdapter", Integer.toString(id));
+        Log.d("DBAdapter", ">>" + id);
         Log.d("DBAdapter", "SAVE <<");
-        return id;
+        // return id; // FIXME return ID
     }
 
     public int delete(int id)
@@ -105,6 +106,28 @@ public class DBAdapter {
             );
         if (cursor.moveToFirst()) {
             return cursor;
+        }
+        return null;
+    }
+
+    public ContentValues get(Long id)
+    {
+        Cursor cursor = db.query(TABLE_NAME,
+            new String[] {"_id", "date", "odometer", "liters", "fuel"},
+            "_id = " + id,
+            null,
+            null,
+            null,
+            null
+            );
+        if (cursor.moveToFirst()) {
+            ContentValues content = new ContentValues();
+            content.put("_id", cursor.getString(0));
+            content.put("date", cursor.getString(1));
+            content.put("odometer", cursor.getString(2));
+            content.put("liters", cursor.getString(3));
+            content.put("fuel", cursor.getString(4));
+            return content;
         }
         return null;
     }

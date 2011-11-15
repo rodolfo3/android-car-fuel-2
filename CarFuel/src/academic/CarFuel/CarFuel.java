@@ -13,9 +13,9 @@ import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.RadioButton;
 import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
 import android.widget.ListView;
 import android.content.Intent;
+import android.widget.AdapterView;
 
 // data wrapper
 import android.content.ContentValues;
@@ -52,21 +52,37 @@ public class CarFuel extends Activity
         db = new DBAdapter(this);
     }
 
+    public void add()
+    {
+        this.edit(new Long(-1));
+    }
+
+    public void edit(Long id)
+    {
+        Intent intent = new Intent(getApplicationContext(), CarFuelAdd.class);
+        intent.putExtra("id", id);
+        startActivityForResult(intent, ADD_RESULT);
+    }
+
     private void reloadData()
     {
         Cursor cursor = db.all();
         if (cursor != null) {
-            // http://developer.android.com/reference/android/widget/CursorAdapter.html
-            // TO SEE: https://thinkandroid.wordpress.com/2010/01/09/simplecursoradapters-and-listviews/
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+            DisplayAdapter adapter = new DisplayAdapter(
                 getApplicationContext(),
-                R.layout.main_item,
-                cursor,
-                new String[] { "date", "odometer", "liters", "fuel" },
-                new int[] { R.id.date, R.id.odometer, R.id.liters, R.id.fuel }
+                cursor
             );
-            ListView gridview = (ListView) findViewById(R.id.list);
-            gridview.setAdapter(adapter);
+            ListView view = (ListView) findViewById(R.id.list);
+            view.setAdapter(adapter);
+            view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(
+                        AdapterView parent,
+                        View v,
+                        int position,
+                        long id) {
+                    edit(id);
+                }
+            });
         } else {
             Toast.makeText(
                 getApplicationContext(),
@@ -80,8 +96,7 @@ public class CarFuel extends Activity
         final Button btn = (Button) findViewById(R.id.add_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CarFuelAdd.class);
-                startActivityForResult(intent, ADD_RESULT);
+                add();
             }
         });
     }

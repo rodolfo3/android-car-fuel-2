@@ -13,14 +13,44 @@
         android:text="Add"
     />
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="100px"
+            android:layout_height="wrap_content"
+            android:padding="10px"
+            android:text="Date"
+        />
+        <TextView
+            android:layout_width="60px"
+            android:layout_height="wrap_content"
+            android:padding="10px"
+            android:text="Km"
+        />
+        <TextView
+            android:layout_width="60px"
+            android:layout_height="wrap_content"
+            android:padding="10px"
+            android:text="Lts"
+        />
+        <TextView
+            android:layout_width="80px"
+            android:layout_height="wrap_content"
+            android:padding="10px"
+            android:text="Fuel"
+        />
+    </LinearLayout>
+
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:numColumns="auto_fit"
         android:gravity="center"
-    />
-
+    >
+    </ListView>
 
 </LinearLayout>
 
