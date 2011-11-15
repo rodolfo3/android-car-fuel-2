@@ -22,6 +22,10 @@ import android.content.ContentValues;
 // toast
 import android.widget.Toast;
 
+// menu
+import android.view.Menu;
+import android.view.MenuItem;
+
 
 public class CarFuelAdd extends Activity
 {
@@ -55,6 +59,57 @@ public class CarFuelAdd extends Activity
     {
         db.close();
         super.onDestroy();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuItem item;
+        super.onCreateOptionsMenu(menu);
+
+        // add(groupid, itemid, order e title)
+        // add(title)
+        item = menu.add("Done");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
+        {
+            public boolean onMenuItemClick(MenuItem item)
+            {
+                done();
+                return true;
+            }
+        });
+        // item.setIcon(R.drawable.<?>);
+
+        if (getId() != -1) {
+            // add(groupid, itemid, order e title)
+            // add(title)
+            item = menu.add("Delete");
+            item.setOnMenuItemClickListener(
+                new MenuItem.OnMenuItemClickListener()
+                {
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        delete();
+                        return true;
+                    }
+                }
+            );
+            // item.setIcon(R.drawable.<?>);
+        }
+
+        // add(groupid, itemid, order e title)
+        // add(title)
+        item = menu.add("Cancel");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
+        {
+            public boolean onMenuItemClick(MenuItem item)
+            {
+                cancel();
+                return true;
+            }
+        });
+        // item.setIcon(R.drawable.<?>);
+
+        return true;
     }
 
     private void initDatabase()
@@ -103,7 +158,7 @@ public class CarFuelAdd extends Activity
         }
     }
 
-    public ContentValues getContent()
+    private ContentValues getContent()
     {
         ContentValues content = new ContentValues();
         EditText aux;
@@ -137,7 +192,7 @@ public class CarFuelAdd extends Activity
         return content;
     }
 
-    public void done(View view)
+    public void done()
     {
         ContentValues content = getContent();
         Log.d("TAG", "save!!!");
@@ -148,9 +203,17 @@ public class CarFuelAdd extends Activity
         finish();
     }
 
-    public void cancel(View view)
+    public void cancel()
     {
         setResult(Activity.RESULT_CANCELED);
+        finish();
+    }
+
+    public void delete()
+    {
+        Long id = getId();
+        db.delete(id);
+        setResult(Activity.RESULT_OK);
         finish();
     }
 
@@ -158,7 +221,7 @@ public class CarFuelAdd extends Activity
         final Button btn = (Button) findViewById(R.id.done_btn);
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                done(v);
+                done();
             }
         });
     }

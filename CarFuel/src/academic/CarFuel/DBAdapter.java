@@ -89,9 +89,9 @@ public class DBAdapter {
         // return id; // FIXME return ID
     }
 
-    public int delete(int id)
+    public int delete(Long id)
     {
-        return db.delete(TABLE_NAME, String.format("_id = %i", id), null);
+        return db.delete(TABLE_NAME, String.format("_id = " + id), null);
     }
 
     public Cursor all()
@@ -102,8 +102,8 @@ public class DBAdapter {
             null,
             null,
             null,
-            null
-            );
+            "date ASC"
+        );
         if (cursor.moveToFirst()) {
             return cursor;
         }

@@ -17,6 +17,10 @@ import android.widget.ListView;
 import android.content.Intent;
 import android.widget.AdapterView;
 
+// menu
+import android.view.Menu;
+import android.view.MenuItem;
+
 // data wrapper
 import android.content.ContentValues;
 
@@ -45,6 +49,23 @@ public class CarFuel extends Activity
     {
         super.onDestroy();
         db.close();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        // groupid, itemid, order e title
+        MenuItem item = menu.add(0, 0, 0, "Add");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
+        {
+            public boolean onMenuItemClick(MenuItem item)
+            {
+                add();
+                return true;
+            }
+        });
+        // item.setIcon(R.drawable.<?>);
+        return true;
     }
 
     private void initDatabase()
@@ -91,26 +112,20 @@ public class CarFuel extends Activity
         }
     }
 
-    private void installEvents()
-    {
-        final Button btn = (Button) findViewById(R.id.add_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                add();
-            }
-        });
-    }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK)
         {
-            Toast.makeText(getApplicationContext(), "Saved!", 10).show();
+            Toast.makeText(getApplicationContext(), "Done!", 10).show();
             reloadData();
         } else {
-            Toast.makeText(getApplicationContext(), "Canceled!", 10).show();
+            // Toast.makeText(getApplicationContext(), "Canceled!", 10).show();
         }
     }
 
+    private void installEvents()
+    {
+        // other functions, like "sort" into the title columns
+    }
 }
