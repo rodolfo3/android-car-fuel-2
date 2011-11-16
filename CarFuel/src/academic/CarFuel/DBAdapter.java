@@ -96,18 +96,49 @@ public class DBAdapter {
 
     public Cursor all()
     {
+        return filter(null, null, "date ASC");
+    }
+
+    public Cursor filter(String[] columns, 
+        String selection, String[] selectionArgs, String orderBy,
+        String group_by)
+    {
         Cursor cursor = db.query(TABLE_NAME,
-            new String[] {"_id", "date", "odometer", "liters", "fuel"},
+            columns,
+            selection,
+            selectionArgs,
+            group_by,
             null,
-            null,
-            null,
-            null,
-            "date ASC"
+            orderBy
         );
         if (cursor.moveToFirst()) {
             return cursor;
         }
         return null;
+    }
+
+    public Cursor filter(String[] columns, 
+        String selection, String[] selectionArgs, String orderBy)
+    {
+        return filter(
+            columns,
+            selection,
+            selectionArgs,
+            orderBy,
+            null
+        );
+        
+    }
+    public Cursor filter(String selection, String[] selectionArgs,
+        String orderBy)
+    {
+        return filter(
+            new String[] {"_id", "date", "odometer", "liters", "fuel"},
+            selection,
+            selectionArgs,
+            orderBy,
+            null
+        );
     }
 
     public ContentValues get(Long id)
